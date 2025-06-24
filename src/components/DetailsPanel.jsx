@@ -8,6 +8,8 @@ import {
   FiUserCheck,
 } from "react-icons/fi";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const formatTime = (timeInSeconds) => {
   if (!timeInSeconds) return "N/A";
 
@@ -37,8 +39,8 @@ const DetailsPanel = ({ segmentId }) => {
       try {
         // Fazemos as duas chamadas em paralelo
         const [detailsResponse, leaderboardResponse] = await Promise.all([
-          fetch(`http://localhost:3000/api/segments/${segmentId}`),
-          fetch(`http://localhost:3000/api/segments/${segmentId}/leaderboard`, {
+          fetch(`${API_URL}/api/segments/${segmentId}`),
+          fetch(`${API_URL}/api/segments/${segmentId}/leaderboard`, {
             credentials: "include",
           }), // Inclui o cookie de sessão!
         ]);

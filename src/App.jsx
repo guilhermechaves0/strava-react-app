@@ -11,6 +11,8 @@ import "./App.css";
 
 const centerPoint = { lat: -5.833095347730074, lon: -35.181564754458854 };
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 function App() {
   // Estados da nossa aplicação
   const [segments, setSegments] = useState([]);
@@ -26,7 +28,7 @@ function App() {
   useEffect(() => {
     async function checkUserStatus() {
       try {
-        const response = await fetch("http://localhost:3000/api/user", {
+        const response = await fetch(`${API_URL}/api/user`, {
           credentials: "include",
         });
         const data = await response.json();
@@ -58,7 +60,7 @@ function App() {
 
         // --- LINHA CORRIGIDA USANDO CONCATENAÇÃO COM '+' ---
         const apiUrl =
-          "http://localhost:3000/api/segments?bounds=" +
+          `${API_URL}/api/segments?bounds=` +
           locationBounds +
           "&activity_type=" +
           activity;

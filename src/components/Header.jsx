@@ -1,11 +1,13 @@
 import React from 'react';
 import { FiLogIn, FiLogOut, FiTrendingUp } from 'react-icons/fi';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const Header = ({ user }) => { // Agora o Header recebe o usuário como "prop"
 
   const handleLogout = async () => {
   // A mudança é adicionar o objeto de opções com 'method' e 'credentials'
-  await fetch('http://localhost:3000/auth/logout', { 
+  await fetch(`${API_URL}/auth/logout`, { 
     method: 'POST',
     credentials: 'include' // <-- AQUI ESTÁ A CORREÇÃO
   });
@@ -32,7 +34,7 @@ const Header = ({ user }) => { // Agora o Header recebe o usuário como "prop"
             </div>
           ) : (
             // Se o usuário NÃO existe, mostra o botão de conectar
-            <a href="http://localhost:3000/auth/strava" className="login-button">
+            <a href={`${API_URL}/auth/strava`} className="login-button">
               <FiLogIn />
               <span>Conectar com o Strava</span>
             </a>

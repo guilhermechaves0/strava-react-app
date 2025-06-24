@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react"; // Importamos o useMemo
 import { FiClock, FiArrowRight } from "react-icons/fi";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const formatDistance = (distance) => (distance / 1000).toFixed(2);
 
 // 1. O componente agora aceita a prop "filterText"
@@ -12,7 +14,7 @@ const MyActivities = ({ filterText }) => {
     const fetchActivities = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/athlete/activities",
+          `${API_URL}/api/athlete/activities`,
           {
             credentials: "include",
           }
