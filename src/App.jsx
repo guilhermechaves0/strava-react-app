@@ -25,16 +25,35 @@ function App() {
 
   useEffect(() => {
     async function checkUserStatus() {
+      console.log("--- DEBUG: 1. Verificando status do usuário...");
       try {
         const response = await fetch(`${API_URL}/api/user`, {
           credentials: "include",
         });
+        console.log(
+          "--- DEBUG: 2. Status da resposta de /api/user:",
+          response.status
+        );
+
         const data = await response.json();
+        console.log("--- DEBUG: 3. Dados recebidos de /api/user:", data);
+
         if (data.user) {
+          console.log(
+            "--- DEBUG: 4. Usuário encontrado! Atualizando o estado.",
+            data.user
+          );
           setUser(data.user);
+        } else {
+          console.log(
+            "--- DEBUG: 5. Nenhum usuário na sessão encontrado na resposta."
+          );
         }
       } catch (error) {
-        console.error("Erro ao verificar status do usuário:", error);
+        console.error(
+          "--- DEBUG: Erro CRÍTICO ao verificar status do usuário:",
+          error
+        );
       } finally {
         setIsAppLoading(false);
       }
@@ -55,9 +74,7 @@ function App() {
           centerPoint.lon + areaSize,
         ].join(",");
         const apiUrl = `${API_URL}/api/segments?bounds=${locationBounds}&activity_type=${activity}`;
-
         const response = await fetch(apiUrl, { credentials: "include" });
-
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || "Erro no servidor.");
@@ -70,8 +87,10 @@ function App() {
         setLoading(false);
       }
     }
-    fetchSegments();
-  }, [activity]);
+    if (!isAppLoading) {
+      fetchSegments();
+    }
+  }, [activity, isAppLoading]);
 
   const processedSegments = useMemo(() => {
     let segmentsToProcess = [...segments];
@@ -93,7 +112,9 @@ function App() {
   };
 
   if (isAppLoading) {
-    return <div className="loading-fullscreen">Carregando Aplicação...</div>;
+    return (
+      <div className="loading-fullscreen">Verificando Autenticação...</div>
+    );
   }
 
   return (
