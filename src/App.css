@@ -1,0 +1,375 @@
+:root {
+  --strava-orange: #fc5200;
+  --light-bg: #f7fafc;
+  --light-card: #ffffff;
+  --light-border: #e2e8f0;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --link-color: #3182ce;
+}
+
+/* Container principal da página */
+.page-container {
+  color: var(--text-primary);
+}
+
+/* Cabeçalho */
+.page-header {
+  background-color: white;
+  padding: 2rem;
+  text-align: center;
+  border-bottom: 1px solid var(--light-border);
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--strava-orange); /* Mantemos a cor de destaque */
+}
+
+.page-header p {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+/* Conteúdo principal da página */
+.page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Estilo base para os "cards" */
+.card {
+  background-color: var(--light-card);
+  border: 1px solid var(--light-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Layout de 2 colunas */
+.content-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* --- Estilos para Componentes Específicos --- */
+
+/* Controles */
+.controls-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem; /* Reduzindo um pouco o padding */
+}
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.control-group span {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.control-group button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  background-color: var(--light-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 600;
+}
+.control-group button:hover {
+  border-color: #cbd5e0;
+  color: var(--text-primary);
+}
+.control-group button.active {
+  background-color: var(--strava-orange);
+  color: white;
+  border-color: var(--strava-orange);
+}
+.filter-input {
+  background-color: var(--light-bg);
+  color: var(--text-primary);
+  padding: 0.5rem;
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+}
+.filter-input:focus {
+  outline: 2px solid var(--strava-orange);
+  border-color: transparent;
+}
+
+/* Lista e Itens de Segmento */
+.segment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Cria 2 colunas de tamanho igual */
+  gap: 1rem;
+}
+.segment-item {
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.segment-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e0;
+}
+.segment-item a {
+  text-decoration: none;
+  color: var(--link-color);
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+.segment-item a:hover {
+  text-decoration: underline;
+}
+.segment-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+}
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Painel de Detalhes */
+.details-panel,
+.details-panel-placeholder {
+  position: sticky;
+  top: 2rem;
+}
+.details-panel-placeholder {
+  color: #a0aec0;
+  text-align: center;
+}
+.details-panel h3 {
+  margin-top: 0;
+  color: var(--strava-orange);
+}
+.details-panel p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+  color: var(--text-secondary);
+}
+.details-panel p strong {
+  color: var(--text-primary);
+}
+
+/* Mapa */
+#map {
+  height: 400px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--light-border);
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.page-content {
+  flex: 1; /* Faz o conteúdo principal crescer e empurrar o footer para baixo */
+}
+
+/* Estilos do Header */
+.site-header {
+  background-color: var(--light-card);
+  border-bottom: 1px solid var(--light-border);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+
+  /* A ÚNICA MUDANÇA É NESTA LINHA: */
+  z-index: 1000; /* Mude de 10 para um valor alto como 1000 */
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.logo-icon {
+  color: var(--strava-orange);
+  font-size: 1.75rem;
+}
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.github-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.github-link:hover {
+  color: var(--strava-orange);
+}
+
+/* Estilos do Footer */
+.site-footer {
+  background-color: var(--light-card);
+  border-top: 1px solid var(--light-border);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+.footer-links a {
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--text-primary);
+}
+
+.segment-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.segment-name {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+}
+
+.external-link-icon {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+.external-link-icon:hover {
+  color: var(--strava-orange);
+}
+
+.modal-overlay {
+  position: fixed; /* Fica fixo na tela */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fundo semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* Garante que fique acima de tudo, até do Header */
+}
+
+.modal-content {
+  position: relative;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px; /* Largura máxima da janela */
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.modal-close-button:hover {
+  color: var(--text-primary);
+}
+
+/* Ajuste para a coluna de segmentos ocupar a largura */
+.segments-column {
+  width: 100%;
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  background-color: var(--strava-orange);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.login-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.logout-button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+.logout-button:hover {
+  background-color: var(--light-border);
+  color: var(--text-primary);
+}
+
+.segments-section h3 {
+  margin-top: 2rem;
+  border-bottom: 1px solid var(--light-border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.my-activities-container h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--light-border);
+  padding-bottom: 0.5rem;
+}

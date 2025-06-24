@@ -1,0 +1,23 @@
+:root {
+  /* Define a fonte Inter como padrão para toda a aplicação */
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Cores base para o tema claro */
+  color: #1a202c;          /* Cor do texto principal (escuro) */
+  background-color: #f7fafc; /* Cor de fundo (cinza muito claro) */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
