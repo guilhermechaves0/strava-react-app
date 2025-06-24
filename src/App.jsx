@@ -9,12 +9,12 @@ import Modal from "./components/Modal";
 import MyActivities from "./components/MyActivities";
 import "./App.css";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const centerPoint = { lat: -5.833095347730074, lon: -35.181564754458854 };
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
 function App() {
-  // Estados da nossa aplicação
+  const [isAppLoading, setIsAppLoading] = useState(true);
+  const [user, setUser] = useState(null);
   const [segments, setSegments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,9 +22,7 @@ function App() {
   const [sortOrder, setSortOrder] = useState("default");
   const [selectedSegmentId, setSelectedSegmentId] = useState(null);
   const [filterText, setFilterText] = useState("");
-  const [user, setUser] = useState(null);
 
-  // EFEITO 1: Roda apenas UMA VEZ para verificar o status de login do usuário.
   useEffect(() => {
     async function checkUserStatus() {
       try {
@@ -37,18 +35,17 @@ function App() {
         }
       } catch (error) {
         console.error("Erro ao verificar status do usuário:", error);
+      } finally {
+        setIsAppLoading(false);
       }
     }
     checkUserStatus();
-  }, []); // Array de dependências vazio, para rodar só no início.
+  }, []);
 
-  // EFEITO 2: Roda sempre que a 'activity' mudar para buscar novos segmentos.
   useEffect(() => {
     async function fetchSegments() {
       setLoading(true);
       setError(null);
-      setSelectedSegmentId(null);
-      setFilterText("");
       try {
         const areaSize = 0.05;
         const locationBounds = [
@@ -57,15 +54,10 @@ function App() {
           centerPoint.lat + areaSize,
           centerPoint.lon + areaSize,
         ].join(",");
+        const apiUrl = `${API_URL}/api/segments?bounds=${locationBounds}&activity_type=${activity}`;
 
-        // --- LINHA CORRIGIDA USANDO CONCATENAÇÃO COM '+' ---
-        const apiUrl =
-          `${API_URL}/api/segments?bounds=` +
-          locationBounds +
-          "&activity_type=" +
-          activity;
+        const response = await fetch(apiUrl, { credentials: "include" });
 
-        const response = await fetch(apiUrl, { credentials: "include" }); // <-- ADICIONE ESTA OPÇÃO
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || "Erro no servidor.");
@@ -79,43 +71,40 @@ function App() {
       }
     }
     fetchSegments();
-  }, [activity]); // Depende apenas da 'activity'.
+  }, [activity]);
 
-  // Lógica para filtrar e ordenar os segmentos (continua a mesma)
   const processedSegments = useMemo(() => {
     let segmentsToProcess = [...segments];
-    if (filterText) {
+    if (filterText)
       segmentsToProcess = segmentsToProcess.filter((segment) =>
         segment.name.toLowerCase().includes(filterText.toLowerCase())
       );
-    }
-    if (sortOrder === "distance") {
+    if (sortOrder === "distance")
       return segmentsToProcess.sort((a, b) => a.distance - b.distance);
-    }
-    if (sortOrder === "elevation") {
+    if (sortOrder === "elevation")
       return segmentsToProcess.sort(
         (a, b) => b.elev_difference - a.elev_difference
       );
-    }
     return segmentsToProcess;
   }, [segments, sortOrder, filterText]);
 
-  // Função para fechar o modal
   const handleCloseModal = () => {
     setSelectedSegmentId(null);
   };
 
+  if (isAppLoading) {
+    return <div className="loading-fullscreen">Carregando Aplicação...</div>;
+  }
+
   return (
     <div className="app-wrapper">
       <Header user={user} />
-
       <div className="page-content">
         <Map
           segments={processedSegments}
           center={centerPoint}
           selectedSegmentId={selectedSegmentId}
         />
-
         <Controls
           currentActivity={activity}
           onActivityChange={setActivity}
@@ -124,20 +113,13 @@ function App() {
           filterText={filterText}
           onFilterChange={setFilterText}
         />
-
-        {/* SEÇÃO 1: SUAS ATIVIDADES (só aparece se estiver logado) */}
         {user && <MyActivities filterText={filterText} />}
-
-        {/* SEÇÃO 2: EXPLORAR SEGMENTOS */}
         <div className="segments-section">
           <h3>Explorar Segmentos</h3>
-
           {loading && <p>Carregando segmentos...</p>}
           {error && (
             <p className="error-message">Falha ao carregar dados: {error}</p>
           )}
-
-          {/* A lista de segmentos agora vive aqui dentro. O CSS cuidará das colunas. */}
           {!loading && !error && (
             <SegmentList
               segments={processedSegments}
@@ -146,12 +128,9 @@ function App() {
           )}
         </div>
       </div>
-
-      {/* O Modal continua aqui, fora do fluxo principal, pronto para ser ativado */}
       <Modal isOpen={!!selectedSegmentId} onClose={handleCloseModal}>
         <DetailsPanel segmentId={selectedSegmentId} />
       </Modal>
-
       <Footer />
     </div>
   );
